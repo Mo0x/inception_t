@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   nginx:
     build: ./srcs/nginx
@@ -17,7 +15,7 @@ services:
   wordpress:
     build: ./srcs/wordpress
     container_name: wordpress
-    emv_file: .env
+    env_file: .env
     volumes:
       - wp_files:/www/html
     networks:
