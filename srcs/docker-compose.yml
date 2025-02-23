@@ -19,9 +19,9 @@ services:
     container_name: wordpress
     emv_file: .env
     volumes:
-      -wp_files:/www/html
+      - wp_files:/www/html
     networks:
-      -inception
+      - inception
     depends_on:
       - mariadb
     restart: always
@@ -35,7 +35,7 @@ services:
     networks:
       - inception
     restart: always
-	
+
 networks:
   inception:
 
