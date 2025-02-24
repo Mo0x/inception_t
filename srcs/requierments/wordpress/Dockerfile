@@ -1,9 +1,12 @@
-FROM debian:bullseye
+FROM debian:buster
 
-RUN apt update && apt install -y php-fpm php-mysql wget
+RUN apt update && apt install -y php php-fpm php-mysql wget
+
+# Ensure PHP-FPM listens on port 9000 instead of a Unix socket
+RUN sed -i 's|listen = /run/php/php7.3-fpm.sock|listen = 9000|' /etc/php/7.3/fpm/pool.d/www.conf
 
 WORKDIR /var/www/html
 RUN wget http://wordpress.org/latest.tar.gz && tar -xzf latest.tar.gz && rm latest.tar.gz
-COPY wp-config.php /var/www/html//wordpress/
+COPY wp-config.php /var/www/html/wordpress/
 
-CMD ["php-fpm", -F]
+CMD ["php-fpm7.3", "-F"]
