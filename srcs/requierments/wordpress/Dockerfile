@@ -7,8 +7,10 @@ RUN sed -i 's|listen = /run/php/php7.3-fpm.sock|listen = 9000|' /etc/php/7.3/fpm
 
 RUN mkdir -p /run/php && chown -R www-data:www-data /run/php
 
+RUN mkdir -p /var/www/html
+
 WORKDIR /var/www/html
-RUN wget http://wordpress.org/latest.tar.gz && tar -xzf latest.tar.gz && rm latest.tar.gz
-COPY wp-config.php /var/www/html/wordpress/
+RUN wget http://wordpress.org/latest.tar.gz && tar -xzf latest.tar.gz 
+# COPY wp-config.php /var/www/html/
 
 CMD ["php-fpm7.3", "-F"]

@@ -1,6 +1,7 @@
 all: up
 
 up:
+	mkdir -p /home/mgovinda/data/wordpress
 	docker-compose -f srcs/docker-compose.yml up --build -d
 
 down:
@@ -8,5 +9,6 @@ down:
 
 clean:
 	docker system prune -af
+	rm -rf /home/mgovinda/data
 
 re: clean up

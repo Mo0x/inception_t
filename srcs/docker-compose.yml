@@ -1,19 +1,17 @@
-version: "3.8"
-
-networks:
-  inception:
-
 services:
   nginx:
     build: ./requierments/nginx
     container_name: nginx
     ports:
-      - "8443:443"
+      - "4430:4430"
     networks:
       - inception
     depends_on:
       - wordpress
     restart: always
+    volumes:
+      - common_wp_ng:/var/www/html
+      - /run/php:/run/php
 
   wordpress:
     build: ./requierments/wordpress
@@ -24,6 +22,11 @@ services:
     depends_on:
       - mariadb
     restart: always
+    expose:
+      - "9000"
+    volumes:
+      - common_wp_ng:/var/www/html
+      - /run/php:/run/php
 
   mariadb:
     build: ./requierments/mariadb
@@ -32,3 +35,17 @@ services:
     networks:
       - inception
     restart: always
+    expose:
+      - "3306"
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  common_wp_ng:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mgovinda/data/wordpress
+      o: bind
