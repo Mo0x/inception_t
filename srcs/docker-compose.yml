@@ -12,6 +12,7 @@ services:
     volumes:
       - common_wp_ng:/var/www/html
       - /run/php:/run/php
+     # - /nginx/ssl:/etc/nginx/ssl
 
   wordpress:
     build: ./requierments/wordpress
@@ -32,6 +33,7 @@ services:
     build: ./requierments/mariadb
     container_name: mariadb
     env_file: .env
+    user: 101498:4223
     networks:
       - inception
     restart: always
