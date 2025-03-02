@@ -37,6 +37,8 @@ services:
     restart: always
     expose:
       - "3306"
+    volumes:
+      - database_volume:/var/lib/mysql
 
 networks:
   inception:
@@ -48,4 +50,10 @@ volumes:
     driver_opts:
       type: none
       device: /home/mgovinda/data/wordpress
+      o: bind
+  database_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mgovinda/data/mariadb
       o: bind

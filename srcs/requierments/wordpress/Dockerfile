@@ -11,6 +11,6 @@ RUN mkdir -p /var/www/html
 
 WORKDIR /var/www/html
 RUN wget http://wordpress.org/latest.tar.gz && tar -xzf latest.tar.gz 
-# COPY wp-config.php /var/www/html/
+COPY wp-config.php /var/www/html/
 
 CMD ["php-fpm7.3", "-F"]
