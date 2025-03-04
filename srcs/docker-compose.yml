@@ -33,14 +33,13 @@ services:
     build: ./requierments/mariadb
     container_name: mariadb
     env_file: .env
-    user: 101498:4223
     networks:
       - inception
     restart: always
     expose:
       - "3306"
     volumes:
-      - database_volume:/var/lib/mysql
+      - /home/mgovinda/data/mariadb:/var/lib/mysql
 
 networks:
   inception:
