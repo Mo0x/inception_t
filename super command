@@ -1,0 +1,1 @@
+docker run --rm -it --privileged -v /home/mgovinda:/host ubuntu bash
