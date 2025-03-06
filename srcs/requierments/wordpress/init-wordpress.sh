@@ -22,6 +22,7 @@ if ! wp core is-installed --path=/var/www/html/wordpress --allow-root; then
         --path=/var/www/html/wordpress \
         --allow-root
 fi
+# need to understand what it does
 
 # Start PHP-FPM
 exec php-fpm7.3 -F
