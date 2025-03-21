@@ -1,0 +1,87 @@
+services:
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    expose:
+      - "9000"  # Assuming the WordPress container listens on port 80
+    depends_on:
+      - mariadb
+    restart: always
+    environment:
+      SQL_DATABASE: ${SQL_DATABASE}
+      SQL_USER: ${SQL_USER}
+      SQL_PASSWORD: ${SQL_PASSWORD}
+      SQL_HOST: ${SQL_HOST}
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASS: ${WP_ADMIN_PASS}
+      WP_EMAIL: ${WP_EMAIL}
+      WP_PATH: ${WP_PATH}
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html
+      - /run/php:/run/php
+    networks:
+      - ohyeah
+    entrypoint: ["/bin/sh", "/usr/local/bin/wp-setup.sh"]
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    expose:
+      - "3306"
+    restart: always
+    environment:
+      SQL_DATABASE: ${SQL_DATABASE}
+      SQL_USER: ${SQL_USER}
+      SQL_PASSWORD: ${SQL_PASSWORD}
+      SQL_ROOT_PASSWORD: ${SQL_ROOT_PASSWORD}
+      SQL_HOST: ${SQL_HOST}
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - /run/mysql:/run/mysql
+    networks:
+      - ohyeah
+    entrypoint: ["/bin/sh", "/usr/local/bin/create_user.sh"]
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "4432:4432"
+    restart: always
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+      - /run/php:/run/php
+    networks:
+      - ohyeah
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mgovinda/data/mariadb
+      o: bind
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mgovinda/data/wordpress
+      o: bind
+
+networks:
+  ohyeah:
+    driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: 172.19.0.0/16
