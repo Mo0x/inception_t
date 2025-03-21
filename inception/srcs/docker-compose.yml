@@ -1,0 +1,22 @@
+services:
+  nginx:
+    build: requierments/nginx/
+    container_name: nginx
+    ports:
+      - "4431:4431"
+    restart: always
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - super_bridge
+
+volumes:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mgovinda/data/wordpress
+      o: bind
+networks:
+  super_bridge:
+    driver: bridge
